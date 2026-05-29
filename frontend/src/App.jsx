@@ -405,6 +405,51 @@ export default function App() {
 
                   </div>
 
+                  {/* Section B.5: AI-Generated Developer Insights */}
+                  <div className="rounded-xl border border-white/5 bg-[#111827]/20 backdrop-blur-md p-6 shadow-xl relative overflow-hidden group">
+                    <div className="absolute -right-24 -bottom-24 w-48 h-48 rounded-full opacity-5 blur-3xl bg-indigo-500 pointer-events-none"></div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="p-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+                        <Activity className="w-4 h-4" />
+                      </div>
+                      <h4 className="text-sm font-bold text-white tracking-tight">AI Developer Intelligence Insights</h4>
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 uppercase tracking-widest ml-auto">Beta Insights</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                      <div className="md:col-span-2 space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">Architectural Overview</span>
+                        <p className="text-xs text-gray-300 leading-relaxed">
+                          {activeUser.developerScore >= 80 
+                            ? `An absolute power-user in the open-source community. Demonstrates exceptional code quality, systemic architectural impact, and outstanding project engineering.` 
+                            : activeUser.developerScore >= 60 
+                            ? `A highly competent system builder with clear project traction. Exhibits excellent architectural practices, robust programming longevity, and steady contribution workflows.`
+                            : activeUser.developerScore >= 40
+                            ? `An active ecosystem developer with a diverse project footprint. Demonstrates solid development velocity, broad repository coverage, and growing community reach.`
+                            : activeUser.developerScore >= 20
+                            ? `A steady and growing ecosystem developer. Actively building projects, exploring baseline repositories, and refining coding paradigms in their primary languages.`
+                            : `A newly emerging developer. Focuses on setting up baseline repositories and exploring foundational programming patterns with high growth potential.`
+                          }
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">Ecosystem Focus</span>
+                        <p className="text-xs text-gray-300 leading-relaxed">
+                          Primary architectural specialization in <strong className="text-indigo-400">{activeUser.topLanguage || 'None'}</strong> codebase frameworks. 
+                          Most starred project: <strong className="text-gray-200">{activeUser.mostStarredRepo || 'N/A'}</strong>.
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">Evaluator Recommendation</span>
+                        <p className="text-xs text-gray-300 leading-relaxed">
+                          {activeUser.developerScore >= 60
+                            ? "Excellent profile for structural technical leadership, modular library orchestration, and complex open-source contribution pipelines."
+                            : "Recommend increasing project outreach, publishing modular utilities, cultivating active stargazers, and maintaining code diversity."
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Section C: Languages chart + repos table breakdown */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                     
