@@ -1,5 +1,7 @@
 # 🚀 GitScope Analyzer — AI-Powered GitHub Developer Intelligence Platform
 
+![GitScope Analyzer Header Banner](gitscope_banner.png)
+
 > **A premium developer metrics SaaS platform that calculates, indexes, and visualizes developer intelligence insights from the GitHub REST API.** Designed as a production-grade full-stack platform, featuring structured MVC routing, automatic database dialect fallback support, detailed scoring algorithms, and a gorgeous glassmorphic dashboard built using React, Tailwind CSS, and Recharts.
 
 ---
