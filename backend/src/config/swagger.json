@@ -1,0 +1,296 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GitScope Analyzer — API Specifications",
+    "version": "1.0.0",
+    "description": "Production-grade REST API endpoints for GitScope Analyzer, the AI-powered GitHub developer intelligence platform. Built with Node.js, Express, Sequelize, and SQLite/MySQL fallback support."
+  },
+  "servers": [
+    {
+      "url": "/api",
+      "description": "Base API Path"
+    }
+  ],
+  "paths": {
+    "/analyze/{username}": {
+      "get": {
+        "summary": "Analyze and save a GitHub Developer profile",
+        "description": "Triggers the core analysis engine to fetch profile data and public repositories from GitHub REST API, calculates the developer intelligence score and rank, and upserts the records into the database.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "GitHub username to analyze",
+            "schema": {
+              "type": "string",
+              "maxLength": 39
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Developer profile successfully analyzed and synced",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid GitHub username format"
+          },
+          "404": {
+            "description": "GitHub profile not found"
+          },
+          "429": {
+            "description": "GitHub API rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "List all analyzed developer profiles",
+        "description": "Retrieves a paginated list of all tracked developer profiles with optional search query and sorting metrics.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of profiles per page",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search term matching username or name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "description": "Field to sort the results by",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "developerScore",
+                "followers",
+                "publicRepos",
+                "totalStars",
+                "accountAgeYears",
+                "lastAnalyzedAt"
+              ],
+              "default": "developerScore"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response returning profiles list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Fetch complete developer profile details",
+        "description": "Retrieves details of a single analyzed developer profile along with all associated public repositories nested in the payload.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The unique primary key ID of the developer profile",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of full profile data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter ID format"
+          },
+          "404": {
+            "description": "Developer profile not found in database records"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a developer profile from database",
+        "description": "Removes the developer record from the database. All nested repositories will be deleted automatically through cascading triggers.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The unique primary key ID of the developer profile",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Developer profile deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Developer profile not found"
+          }
+        }
+      }
+    },
+    "/top-developers": {
+      "get": {
+        "summary": "Retrieve top developers leaderboard",
+        "description": "Fetches the top 10 highest-ranked developer profiles tracked across the entire platform, ordered by their score.",
+        "responses": {
+          "200": {
+            "description": "Leaderboard loaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trending": {
+      "get": {
+        "summary": "Get recently searched profiles",
+        "description": "Fetches historical lists of recently analyzed/searched profiles, helping feed the dashboard's side widgets.",
+        "responses": {
+          "200": {
+            "description": "Trending searches loaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stats/platform": {
+      "get": {
+        "summary": "Retrieve system aggregates",
+        "description": "Computes platform-wide averages, sum distributions, top developers, and primary programming language distributions for visual widgets.",
+        "responses": {
+          "200": {
+            "description": "System analytical summaries calculated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Query profiles by language",
+        "description": "Performs exact matches to find developer profiles whose primary language matches the provided query string.",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "required": true,
+            "description": "The programming language name (e.g. javascript, python)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query matching completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Language query string is required"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StandardResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Operation completed successfully"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

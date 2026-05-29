@@ -1,0 +1,257 @@
+{
+  "info": {
+    "_postman_id": "7ca64731-f112-40a2-92e1-4566c28f0909",
+    "name": "GitScope Analyzer API",
+    "description": "Postman Collection for GitScope Analyzer — AI-Powered GitHub Developer Intelligence Platform REST APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Platform Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/health",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Verifies that the server is online, returns system uptime and server timestamp."
+      },
+      "response": []
+    },
+    {
+      "name": "Analyze Developer Profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/analyze/:username",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "analyze",
+            ":username"
+          ],
+          "variable": [
+            {
+              "key": "username",
+              "value": "torvalds",
+              "description": "GitHub username to analyze and sync"
+            }
+          ]
+        },
+        "description": "Triggers the core metrics analyzer to fetch GitHub profile and repositories, compute scoring, and save to database."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Analyzed Users (List)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/users?page=1&limit=10&sortBy=developerScore&search=",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            },
+            {
+              "key": "sortBy",
+              "value": "developerScore",
+              "description": "Sort metric: developerScore, followers, publicRepos, totalStars, accountAgeYears"
+            },
+            {
+              "key": "search",
+              "value": ""
+            }
+          ]
+        },
+        "description": "Retrieves the list of all tracked and analyzed developers from the database with pagination, sorting, and name filtering."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single User Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/users/:id",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "The numeric ID of the tracked developer"
+            }
+          ]
+        },
+        "description": "Retrieves complete metrics for a tracked developer profile along with all their public repositories nested."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Top Developers (Leaderboard)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/top-developers",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "top-developers"
+          ]
+        },
+        "description": "Loads the top 10 highest scoring developer profiles tracked globally."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Trending Searches",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/trending",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "trending"
+          ]
+        },
+        "description": "Loads list of recently queried usernames and search counters."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Platform Statistics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/stats/platform",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "stats",
+            "platform"
+          ]
+        },
+        "description": "Returns platform aggregation details like average account age, stars sum, language counts, and rank distributions."
+      },
+      "response": []
+    },
+    {
+      "name": "Search Developers by Language",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/search?language=javascript",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "javascript"
+            }
+          ]
+        },
+        "description": "Queries developer profiles whose top language matches the query string."
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User Profile",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{BASE_URL}}/api/users/:id",
+          "host": [
+            "{{BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "Numeric database ID of the developer to wipe"
+            }
+          ]
+        },
+        "description": "Wipes the developer record from DB and automatically cascades deletion of all associated repositories."
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "https://gitscope-analyzer-production.up.railway.app",
+      "type": "string"
+    }
+  ]
+}
