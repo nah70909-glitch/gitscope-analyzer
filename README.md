@@ -4,6 +4,14 @@
 
 ---
 
+## 🌐 Live Production Deployments
+
+* **🚀 Live SaaS Application**: [https://frontend-pi-seven-47.vercel.app](https://frontend-pi-seven-47.vercel.app)
+* **📖 Interactive API Specs (Swagger UI)**: [https://gitscope-analyzer-production.up.railway.app/api-docs](https://gitscope-analyzer-production.up.railway.app/api-docs)
+* **🟢 Backend Health Check**: [https://gitscope-analyzer-production.up.railway.app/health](https://gitscope-analyzer-production.up.railway.app/health)
+
+---
+
 ## 💎 Key Features
 
 - **🔎 High-Performance Profile Analysis**: Resolves any public GitHub profile in real-time. Instantly pulls and indexes profile info and public repository databases (supporting pagination for highly active accounts).
